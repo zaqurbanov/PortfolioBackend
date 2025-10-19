@@ -1,0 +1,39 @@
+import Contact from '#models/contact'
+import { createContact, updateContact } from '#validators/contact'
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class ContactsController {
+    async index({ }: HttpContext) {
+        return await Contact.query()
+    }
+    async show({ request }: HttpContext) {
+        return await Contact.query().where('id', request.param('id')).firstOrFail()
+    }
+    async store({ request }: HttpContext) {
+        const payload = await createContact.validate(request.only(['name', 'value', 'icon']), {
+            meta: {
+                tableName: 'contacts'
+            }
+        })
+        return await Contact.create(payload)
+    }
+    async update({ request }: HttpContext) {
+        const contact = await Contact.query().where('id', request.param('id')).firstOrFail()
+        const payload = await updateContact.validate(request.only(['name', 'value', 'icon']), {
+            meta: {
+                id: contact.id,
+                tableName: 'contacts'
+            }
+        })
+            contact.merge(payload)
+            await contact.save()
+            return contact
+    }
+    async destroy({ request}: HttpContext) { 
+
+        const contact = await Contact.query().where('id',request.param('id')).firstOrFail()
+        await contact.delete()
+        return contact
+
+    }
+}
