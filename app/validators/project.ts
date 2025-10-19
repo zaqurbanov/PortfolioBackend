@@ -6,7 +6,7 @@ import { isExistValidator } from '../../helper/validatorHelper.js'
 export const createProject = vine.compile(
     vine.object({
         
-        roleId: vine.number().exists(async (db, value, field) => { 
+        roleId: vine.number().exists(async (db, value) => { 
                 const data = db.from('roles').where('id', Number(value)).first()
                 return data
             
@@ -15,7 +15,7 @@ export const createProject = vine.compile(
    
     translations:vine.array(
         vine.object({
-            languageId:vine.number().exists(async(db,value,field)=>{
+            languageId:vine.number().exists(async(db,value)=>{
                 const data  = db.from('languages').where('id',value).first()
                 return data
             }),
@@ -32,7 +32,7 @@ export const createProject = vine.compile(
     ),
 
     skills:vine.array(
-            vine.number().exists(async(db,value,field)=>{
+            vine.number().exists(async(db,value)=>{
                 const data  = db.from('skills').where('id',value).first()
                 return data
             })

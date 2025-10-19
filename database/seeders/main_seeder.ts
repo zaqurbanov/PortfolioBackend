@@ -2,7 +2,6 @@ import About from '#models/about'
 import Category from '#models/category'
 import Contact from '#models/contact'
 import Language from '#models/language'
-import Link from '#models/link'
 import Project from '#models/project'
 import Role from '#models/role'
 import Skill from '#models/skill'
@@ -17,7 +16,7 @@ export default class extends BaseSeeder {
 
 
     const categoryFront = await Category.create({name:'Frontend',icon:'fa-brands fa-html5'})
-    const categoryBack = await Category.create({name:'Backend',icon:'fa-solid fa-server'})
+     await Category.create({name:'Backend',icon:'fa-solid fa-server'})
     const roleDev = await Role.create({name:'Frontent Developer'})
      await Contact.create({icon:'fa-solid fa-envelope',name:'Email',value:'qurbanovzaur078@gmail.com'})
 

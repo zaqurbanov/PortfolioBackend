@@ -7,8 +7,6 @@
 |
 */
 
-import CategoriesController from '#controllers/categories_controller'
-import LangsController from '#controllers/langs_controller'
 import router from '@adonisjs/core/services/router'
 const mainPrefix = 'api/v1'
 router.get('/', async () => {
