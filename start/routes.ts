@@ -22,6 +22,8 @@ router.group(()=>{
   router.resource('role','#controllers/roles_controller')
   router.resource('contact','#controllers/contacts_controller')
   router.resource('project','#controllers/projects_controller')
+  router.resource('about','#controllers/about_controller')
+  router.resource('link','#controllers/links_controller')
 }).prefix(mainPrefix)
 
 
