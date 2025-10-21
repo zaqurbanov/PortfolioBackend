@@ -1,9 +1,7 @@
-import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import {  column } from '@adonisjs/lucid/orm'
+import CustomBaseModel from './customBaseModel.js'
 
-export default class Contact extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+export default class Contact extends CustomBaseModel {
 
   @column()
   declare name: string
@@ -14,10 +12,4 @@ export default class Contact extends BaseModel {
 
   @column()
   declare icon:string
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
 }

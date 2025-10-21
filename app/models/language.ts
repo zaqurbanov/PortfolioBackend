@@ -1,12 +1,10 @@
-import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import {  column, hasMany } from '@adonisjs/lucid/orm'
 import ProjectTranslation from './project_translation.js'
 import type{ HasMany } from '@adonisjs/lucid/types/relations'
 import AboutTranslation from './about_translation.js'
+import CustomBaseModel from './customBaseModel.js'
 
-export default class Language extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+export default class Language extends CustomBaseModel {
 
   @column()
   declare name: string 
@@ -25,10 +23,4 @@ export default class Language extends BaseModel {
 })
 public declare aboutTranslations: HasMany<typeof AboutTranslation>
 
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
 }

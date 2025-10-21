@@ -1,11 +1,9 @@
-import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import { column, hasMany } from '@adonisjs/lucid/orm'
 import Project from './project.js'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
+import CustomBaseModel from './customBaseModel.js'
 
-export default class Role extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+export default class Role extends CustomBaseModel {
 
   @column()
   declare name: string
@@ -14,10 +12,4 @@ export default class Role extends BaseModel {
     foreignKey:'roleId'
   })
   public declare projects: HasMany<typeof Project>
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
 }

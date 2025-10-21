@@ -1,12 +1,10 @@
-import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import {belongsTo, column } from '@adonisjs/lucid/orm'
 import Project from './project.js'
 import type{ BelongsTo } from '@adonisjs/lucid/types/relations'
 import Language from './language.js'
+import CustomBaseModel from './customBaseModel.js'
 
-export default class ProjectTranslation extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+export default class ProjectTranslation extends CustomBaseModel {
 
   @column()
   declare projectId: number
@@ -25,14 +23,10 @@ export default class ProjectTranslation extends BaseModel {
 
   @column()
   public declare languageId: number;
+
   @belongsTo(()=>Language,{
     foreignKey:'languageId'
   })
   public declare language: BelongsTo<typeof Language>
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
 }

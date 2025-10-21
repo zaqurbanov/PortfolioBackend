@@ -1,14 +1,10 @@
-import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import {  belongsTo, column } from '@adonisjs/lucid/orm'
 import Project from './project.js'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import CustomBaseModel from './customBaseModel.js'
 
-export default class Link extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+export default class Link extends CustomBaseModel {
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
 
   @column()
   public declare type:string
@@ -23,7 +19,4 @@ export default class Link extends BaseModel {
     foreignKey:'projectId'
   })
   public declare project:BelongsTo<typeof Project>
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
 }

@@ -1,12 +1,10 @@
-import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column,  manyToMany } from '@adonisjs/lucid/orm'
+import {  belongsTo, column,  manyToMany } from '@adonisjs/lucid/orm'
 import Category from './category.js'
 import type { BelongsTo,  ManyToMany } from '@adonisjs/lucid/types/relations'
 import Project from './project.js'
+import CustomBaseModel from './customBaseModel.js'
 
-export default class Skill extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+export default class Skill extends CustomBaseModel {
 
   @column()
   declare name: string
@@ -24,9 +22,4 @@ export default class Skill extends BaseModel {
     pivotTable:'project_skills',
   })
   public declare projects: ManyToMany<typeof Project>
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
 }
