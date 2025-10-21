@@ -2,14 +2,16 @@ import Project from '#models/project'
 import { createProject } from '#validators/project'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
+import firstOrFailHelper from '../../helper/firstOrFailHelper.js'
 
 export default class ProjectsController {
     async index({ }: HttpContext) {
         return await Project.query().preload('role').preload('skills').preload('translations').preload('links')
+
     }
     async show({ request }: HttpContext) {
-        const contact = await Project.query().where('id', request.param('id')).preload('role').preload('skills').preload('translations').preload('links').firstOrFail()
-        return contact
+        const project = await firstOrFailHelper(Project, request.param('id'),'role','skills','translations','links')
+        return project
     }
 
     async store({ request }: HttpContext) {
@@ -33,7 +35,7 @@ export default class ProjectsController {
         return project
     }
     async update({ request }: HttpContext) {
-        const project = await Project.query().where('id', request.param('id')).firstOrFail()
+        const project = await firstOrFailHelper(Project, request.param('id'),'role','skills','translations','links')
 
         const payload = await createProject.validate(request.all())
         await db.transaction(async (trx) => {
@@ -46,13 +48,11 @@ export default class ProjectsController {
         project.related('links').updateOrCreateMany(payload.links, ['type'])
         await project.related('skills').sync(payload.skills)
 
-        await project.load((loader) => {
-            return loader.load('role').load('skills').load('translations').load('links')
-        })
+     
         return project
     }
     async destroy({ request }: HttpContext) {
-        const project = await Project.query().where('id', request.param('id')).firstOrFail()
+        const project = await firstOrFailHelper(Project, request.param('id'),'role','skills','translations','links')
         await project.delete()
         return project
     }

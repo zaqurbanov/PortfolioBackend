@@ -1,6 +1,7 @@
 import Language from '#models/language'
 import { createLangValidator, updateLangValidator } from '#validators/lang'
 import type { HttpContext } from '@adonisjs/core/http'
+import firstOrFailHelper from '../../helper/firstOrFailHelper.js'
 
 export default class LangsController {
 
@@ -9,7 +10,7 @@ export default class LangsController {
     }
 
     async show({ request }: HttpContext) {
-        return await Language.findByOrFail('id', request.param('id'))
+        return await firstOrFailHelper(Language, request.param('id'))
     }
 
     async store({ request }: HttpContext) {
@@ -18,7 +19,7 @@ export default class LangsController {
     }
 
     async update({ request, }: HttpContext) {
-        const langModel = await Language.findByOrFail('id', request.param('id'))
+        const langModel = await firstOrFailHelper(Language, request.param('id'))
         const payload = await updateLangValidator.validate(request.all(), {
             meta: {
                 id: langModel.id,
@@ -32,7 +33,7 @@ export default class LangsController {
     }
 
     async destroy({ request }: HttpContext) {
-        const langModel = await Language.findByOrFail('id', request.param('id'))
+        const langModel = await firstOrFailHelper(Language, request.param('id'))
         await langModel.delete()
         return langModel
     }

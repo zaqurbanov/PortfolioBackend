@@ -1,6 +1,7 @@
 import Role from '#models/role'
 import { createRoleValidator, updateRoleValidator } from '#validators/role'
 import type { HttpContext } from '@adonisjs/core/http'
+import firstOrFailHelper from '../../helper/firstOrFailHelper.js'
 
 export default class RolesController {
     async index ({}: HttpContext) {
@@ -9,7 +10,7 @@ export default class RolesController {
     }
 
     async show ({request}: HttpContext) {
-        return await Role.query().where('id', request.param('id')).firstOrFail()
+        return await firstOrFailHelper(Role, request.param('id'))
     }
 
     async store ({request}: HttpContext) {
@@ -19,7 +20,7 @@ export default class RolesController {
     }
 
     async update ({request}: HttpContext) {
-        const role  = await Role.query().where('id', request.param('id')).firstOrFail()
+        const role  = await firstOrFailHelper(Role, request.param('id'))
         const payload = await updateRoleValidator.validate(request.only(['name']), { meta: { id: role.id, tableName: 'roles' } })
 
     const data = role.merge(payload)
@@ -28,7 +29,7 @@ export default class RolesController {
     }
 
     async destroy ({request}: HttpContext) {
-        const role  = await Role.query().where('id', request.param('id')).firstOrFail()
+        const role  = await firstOrFailHelper(Role, request.param('id'))
         await role.delete()
         return role
     }

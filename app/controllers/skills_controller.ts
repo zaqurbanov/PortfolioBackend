@@ -1,6 +1,7 @@
 import Skill from '#models/skill'
 import { createSkill, updateSkill } from '#validators/skill'
 import type { HttpContext } from '@adonisjs/core/http'
+import firstOrFailHelper from '../../helper/firstOrFailHelper.js'
 
 export default class SkillsController {
 
@@ -9,8 +10,7 @@ export default class SkillsController {
         return data
     }
     async show({ request }: HttpContext) {
-        const category = Skill.query().where('id', request.param('id')).preload('category').firstOrFail()
-
+        const category = await firstOrFailHelper(Skill,request.param('id'),'category')
         return category
     }
     async store({ request }: HttpContext) {
@@ -25,7 +25,7 @@ export default class SkillsController {
         return await Skill.create(payload)
     }
     async update({ request }: HttpContext) {
-        const skill = await Skill.findOrFail(request.param('id'))
+        const skill = await firstOrFailHelper(Skill, request.param('id'),'category')
         const payload = await updateSkill.validate(request.only(['name', 'categoryId']), {
             meta: {
                 tableName: 'skills',
@@ -40,7 +40,7 @@ export default class SkillsController {
         return skill
     }
     async destroy({ request }: HttpContext) {
-        const skill = await Skill.findOrFail(request.param('id'))
+        const skill = await firstOrFailHelper(Skill, request.param('id'))
         await skill.delete()
         return skill
     }

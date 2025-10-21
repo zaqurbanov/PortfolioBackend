@@ -1,13 +1,14 @@
 import Link from '#models/link'
 import { createLink, updateLink } from '#validators/link'
 import type { HttpContext } from '@adonisjs/core/http'
+import firstOrFailHelper from '../../helper/firstOrFailHelper.js'
 
 export default class LinksController {
     async index({}:HttpContext){
         return await Link.query().preload('project')
     }
     async show({request}:HttpContext){
-        return await Link.query().where('id',request.param('id')).preload('project').firstOrFail()
+        return await firstOrFailHelper(Link, request.param('id'),'project')
 
     }
 
@@ -19,7 +20,7 @@ export default class LinksController {
     }
 
     async update({request}:HttpContext){
-        const link  = await Link.query().where('id',request.param('id')).preload('project').firstOrFail()
+        const link = await firstOrFailHelper(Link, request.param('id'),'project')
         const payload = await updateLink.validate(request.all(),{meta:{id:link.id}})
         link.merge(payload)
         await link.save()
@@ -28,7 +29,7 @@ export default class LinksController {
     }
 
     async destroy({request}:HttpContext){
-        const link = await Link.query().where('id',request.param('id')).firstOrFail()
+        const link = await firstOrFailHelper(Link, request.param('id'),'project')
         await link.delete()
         return link
     }
