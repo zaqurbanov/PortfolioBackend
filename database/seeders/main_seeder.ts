@@ -12,7 +12,7 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 export default class extends BaseSeeder {
   async run() {
     // Write your database queries inside the run method
-    await User.create({
+    await User.firstOrCreate({
       fullName: 'Zaur Qurbanov',
       email: env.get('ADMIN_EMAIL'),
       password: env.get('ADMIN_PASSWORD'),
