@@ -5,12 +5,18 @@ import Language from '#models/language'
 import Project from '#models/project'
 import Role from '#models/role'
 import Skill from '#models/skill'
+import User from '#models/user'
+import env from '#start/env'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
 export default class extends BaseSeeder {
   async run() {
     // Write your database queries inside the run method
-
+    await User.create({
+      fullName: 'Zaur Qurbanov',
+      email: env.get('ADMIN_EMAIL'),
+      password: env.get('ADMIN_PASSWORD'),
+    })
     const langAz = await Language.create({name:'Azərbaycanca',code:'az'})
     const langEn = await Language.create({name:'English',code:'en'})
 

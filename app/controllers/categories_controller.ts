@@ -7,16 +7,16 @@ export default class CategoriesController {
     async index({ }: HttpContext) {
         return Category.all()
     }
-    async show({ request}: HttpContext) {
+    async show({ request }: HttpContext) {
         return await firstOrFailHelper(Category, request.param('id'))
     }
 
-    async store({ request}: HttpContext) {
+    async store({ request }: HttpContext) {
         const payload = await createCategory.validate(request.all(), { meta: { tableName: 'categories' } })
         return await Category.create(payload)
     }
 
-    async update({ request}: HttpContext) {
+    async update({ request }: HttpContext) {
         const category = await firstOrFailHelper(Category, request.param('id'))
         const payload = await updateCategory.validate(request.all(), { meta: { id: category.id, tableName: 'categories' } })
 
@@ -25,7 +25,7 @@ export default class CategoriesController {
         return category
     }
 
-    async destroy({ request}: HttpContext) {
+    async destroy({ request }: HttpContext) {
         const category = await firstOrFailHelper(Category, request.param('id'))
         await category.delete()
         return category

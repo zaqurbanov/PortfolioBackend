@@ -44,9 +44,9 @@ export default class ProjectsController {
             await project.save()
 
             await project.related('translations').updateOrCreateMany(payload.translations, ['languageId'])
+            project.related('links').updateOrCreateMany(payload.links, ['type'])
+            await project.related('skills').sync(payload.skills)
         })
-        project.related('links').updateOrCreateMany(payload.links, ['type'])
-        await project.related('skills').sync(payload.skills)
 
      
         return project

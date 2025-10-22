@@ -7,6 +7,7 @@
 |
 */
 
+import UsersController from '#controllers/users_controller'
 import router from '@adonisjs/core/services/router'
 const mainPrefix = 'api/v1'
 router.get('/', async () => {
@@ -24,6 +25,7 @@ router.group(()=>{
   router.resource('project','#controllers/projects_controller')
   router.resource('about','#controllers/about_controller')
   router.resource('link','#controllers/links_controller')
+  router.post('/login',[UsersController,'login'])
 }).prefix(mainPrefix)
 
 

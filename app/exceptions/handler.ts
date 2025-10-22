@@ -13,7 +13,26 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
-    return super.handle(error, ctx)
+    const response = await super.handle(error, ctx)
+
+    if(error ) {
+      const statusCode = ctx.response.getStatus()
+      
+      const messages =  error?.messages?.map(message => message.message)
+      if(ctx.response.isPending){
+
+        ctx.response.status(statusCode).send({
+          success: false,
+          error: error.code,
+          statusCode,
+          message: error.message,
+          messages:messages
+        })
+      }
+      
+    }
+    
+    return response
   }
 
   /**
