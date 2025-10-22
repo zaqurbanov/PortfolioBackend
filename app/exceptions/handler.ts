@@ -1,6 +1,11 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
-
+interface CustomError {
+  code?: string
+  message?: string
+  messages?: { message: string }[]
+  status?: number
+}
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
    * In debug mode, the exception handler will display verbose errors
@@ -12,7 +17,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * The method is used for handling errors and returning
    * response to the client
    */
-  async handle(error: unknown, ctx: HttpContext) {
+  async handle(error: CustomError, ctx: HttpContext) {
     const response = await super.handle(error, ctx)
 
     if(error ) {
